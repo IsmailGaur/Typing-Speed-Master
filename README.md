@@ -1,26 +1,27 @@
-# ⌨️ Typing Speed Master 
+# ⌨️ Typing Speed Master 🎯
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)
 ![Pygame](https://img.shields.io/badge/Pygame-Game%20Engine-orange)
 ![Status](https://img.shields.io/badge/status-Active-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-> **Typing Speed Master** is an interactive, real-time typing game developed in **Python** using **Pygame**. It helps users practice and improve their typing speed and accuracy through a beautifully designed dark-mode interface with audio feedback and multiple paragraph challenges.
+> **Typing Speed Master** is an interactive and real-time typing speed test game built with **Python** and **Pygame**. It offers a dark-themed interface, audio feedback, paragraph selection, and detailed results — making it perfect for testing and improving typing speed and accuracy.
 
 ---
 
-## Demo
+## 🎮 Demo
 
-Here’s a preview of the application:
+### 🧑‍🎓 Guest User Screen  
+![Guest UI](assets/guest-ui.png)
 
 ### 🏠 Home Screen  
-![Home UI](assets/Home-ui.png)
+![Home UI](assets/home-ui.png)
 
-### 🧑‍💼 Manage Users  
-![Manage Users](assets/manage%20users.png)
+### 👥 Manage Users  
+![Manage Users](assets/manage-users.png)
 
 ### ⌨️ Typing Box  
-![Typing Box](assets/Typing%20Box.png)
+![Typing Box](assets/typing-box.png)
 
 ### 🏁 Final Result  
 ![Result Screen](assets/result.png)
@@ -29,18 +30,14 @@ Here’s a preview of the application:
 
 ## ✨ Features
 
-- 🟢 Real-time WPM and Accuracy calculation
-- ⏱️ Countdown timer + session duration
-- ✅ Character-level visual feedback:
-  - Green = correct
-  - Red = incorrect
-  - Gray = remaining
-- 🔀 Paragraph selector with multiple choices
-- 📊 End result screen with all key metrics
-- 🔁 Restart functionality
-- 🔊 Sound feedback for typing, errors, and game completion
-- 🧠 Tracks high and low scores locally
-- 🌙 Clean, dark-mode UI
+- ⏱️ Real-time WPM & accuracy tracking
+- ✅ Character-level highlighting (green/red/gray)
+- 🔀 Paragraph selector (random/custom)
+- 📊 Final stats: WPM, accuracy, errors, time
+- 🧠 High and low score tracking
+- 🔁 Restart button for instant retry
+- 🔊 Audio feedback: typing, error, and complete
+- 🌙 Modern dark-mode UI
 
 ---
 
@@ -48,48 +45,39 @@ Here’s a preview of the application:
 
 - **Python 3.8+**
 - **Pygame 2.x**
-- JSON for local paragraph and score data
+- **JSON** (for paragraph and user data)
 
 ---
 
 ## 📁 Folder Structure
 Typing-Speed-Master/
-├── main.py # Game logic
+├── main.py # Main logic
 ├── paragraph.json # Paragraph bank
-├── sentences.txt # Paragraphs text
-├── scores.txt # High/low scores
-├── users.json # User data (optional)
+├── sentences.txt # Raw paragraph source
+├── scores.txt # Local score tracking
+├── users.json # User history (optional)
 ├── assets/
-│ ├── Audio/ # Keypress and system sounds
-│ ├── Home-ui.png
-│ ├── manage users.png
-│ ├── Typing Box.png
+│ ├── guest-ui.png
+│ ├── home-ui.png
+│ ├── manage-users.png
+│ ├── typing-box.png
 │ └── result.png
-├── .gitignore
 ├── requirements.txt
+├── .gitignore
 └── README.md
-
-
-
- How WPM & Accuracy Are Calculated
-WPM = (Correct Characters / 5) ÷ Minutes
+📊 WPM & Accuracy
+WPM (Words Per Minute) = (Correct Characters ÷ 5) ÷ Minutes
 
 Accuracy = (Correct Characters ÷ Total Typed) × 100
 
-You’ll see a full report at the end showing:
+🤝 Contributing
+Contributions are welcome! Fork the repo, create a branch, and submit a pull request. You can also open issues for bugs or feature requests.
 
- Words Per Minute
+📄 License
+This project is licensed under the MIT License.
 
- Accuracy %
+🙌 Acknowledgements
+Pygame – game engine
 
- Typing Errors
+Freesound.org – sound effects
 
-Total Time
-
-High & Low Score
-
-
-🙌 Special Thanks
-Pygame – for the graphics and sound framework
-
-Freesound.org – for royalty-free sounds
