@@ -6,13 +6,10 @@ import random
 import os
 import json  # New: for saving/loading user data
 
-# --- Constants and Configurations ---
 SCREEN_WIDTH = 1000  # Increased width for more UI elements
 SCREEN_HEIGHT = 700  # Increased height
 FPS = 60
 
-# --- Themes ---
-# Define color palettes for different themes
 THEMES = {
     "Dark Mode": {
         "BACKGROUND": (20, 20, 20),  # Deep dark
@@ -53,7 +50,6 @@ THEMES = {
 }
 DEFAULT_THEME = "Dark Mode"
 
-# Game States
 MENU = 0
 TYPING = 1
 RESULTS = 2
@@ -62,25 +58,21 @@ COUNTDOWN = 4
 USER_SELECT = 5  # New state for user management
 CREATE_USER = 6  # New state for creating a new user
 
-# Paths for external files
 ASSETS_DIR = 'assets'
 AUDIO_DIR = os.path.join(ASSETS_DIR, 'audio')
 SENTENCES_FILE = 'sentences.txt'
 USERS_FILE = 'users.json'  # New: File to store user data
 
-# Typing Box Dimensions and Position
 INPUT_BOX_WIDTH = 700
 INPUT_BOX_HEIGHT = 100
 INPUT_BOX_X = (SCREEN_WIDTH - INPUT_BOX_WIDTH) // 2
 INPUT_BOX_Y = SCREEN_HEIGHT // 2 - 50
 
-# Progress Bar Dimensions
 PROGRESS_BAR_WIDTH = 600
 PROGRESS_BAR_HEIGHT = 20
 PROGRESS_BAR_X = (SCREEN_WIDTH - PROGRESS_BAR_WIDTH) // 2
 PROGRESS_BAR_Y = SCREEN_HEIGHT - 120
 
-# Keyboard Layout for On-Screen Visualizer and Heatmap
 KEYBOARD_LAYOUT = [
     "`1234567890-=",
     "qwertyuiop[]\\",
@@ -95,7 +87,6 @@ KEY_HEIGHT = 40
 KEY_MARGIN = 5
 
 
-# --- Helper Classes ---
 
 class Button:
     def __init__(self, x, y, width, height, text, font_size, color_name, hover_color_name, text_color_name,
@@ -127,7 +118,6 @@ class Button:
         return False
 
 
-# --- Main Game Class ---
 
 class Game:
     def __init__(self):
@@ -145,17 +135,14 @@ class Game:
 
         self.current_state = MENU
 
-        # Theme management
         self.current_theme_name = DEFAULT_THEME
         self.current_theme_colors = THEMES[DEFAULT_THEME]
 
-        # User management
         self.users_data = self._load_users_data()
         self.current_user = None  # No user selected initially
         self.new_user_input = ""  # For user creation
         self.user_input_active = False  # For user creation input box
 
-        # Game Variables (reset for each new game)
         self.input_text = ""
         self.target_paragraph = ""
         self.time_start = 0
@@ -164,19 +151,15 @@ class Game:
         self.wpm = 0
         self.accuracy = 0.0
 
-        # Blinking Cursor Variables
         self.cursor_visible = True
         self.cursor_timer = 0
         self.cursor_blink_rate = 500
 
-        # Input box scrolling variable
         self.input_scroll_offset_x = 0
 
-        # Countdown variables
         self.countdown_number = 3
         self.countdown_start_time = 0
 
-        # --- Advanced Analytics Data ---
         self.wpm_history = []  # Stores (timestamp, wpm) pairs during typing
         self.error_char_map = {}  # Tracks errors per character {char: count}
         self.last_typed_char_pos = 0  # To calculate omissions/insertions
@@ -184,7 +167,6 @@ class Game:
         self.key_heatmap_data = {}  # {key_char: error_count} for keyboard visualizer
         self.current_key_to_press = ''  # For on-screen keyboard highlighting
 
-        # Paragraph Data
         self.paragraphs = self._load_paragraphs()
         self.selected_paragraph_index = 0
         if self.paragraphs:
@@ -192,7 +174,6 @@ class Game:
         else:
             self.target_paragraph = "No paragraphs loaded. Please check sentences.txt."
 
-        # UI Buttons (Pass self.game instance for theme awareness)
         self.start_button = Button(SCREEN_WIDTH // 2 - 120, SCREEN_HEIGHT // 2 + 80, 240, 60, "Start Typing", 45,
                                    "PRIMARY_ACCENT", "SECONDARY_ACCENT", "FOREGROUND", self)
         self.restart_button = Button(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT - 100, 200, 50, "Restart", 40,
@@ -215,7 +196,6 @@ class Game:
 
         self.user_selection_buttons = []  # For dynamic user selection buttons
 
-        # Background Image
         self.background_img = None
         try:
             self.background_img = pygame.image.load(os.path.join(ASSETS_DIR, 'background.jpg')).convert()
@@ -224,13 +204,11 @@ class Game:
             print("Warning: background.jpg not found in assets folder. Using solid color background.")
             self.background_img = None
 
-        # Sound Effects
         self.key_press_sound = self._load_sound(os.path.join(AUDIO_DIR, 'key_press.wav'))
         self.error_sound = self._load_sound(os.path.join(AUDIO_DIR, 'error.wav'))
         self.game_start_sound = self._load_sound(os.path.join(AUDIO_DIR, 'game_start.wav'))
         self.game_complete_sound = self._load_sound(os.path.join(AUDIO_DIR, 'game_complete.wav'))
 
-        # Keyboard layout for drawing
         self.keyboard_key_rects = {}  # Stores {char: pygame.Rect} for drawing/heatmap
 
     def _load_sound(self, path):
@@ -278,7 +256,6 @@ class Game:
             self.current_theme_name = DEFAULT_THEME
             self.current_theme_colors = THEMES[DEFAULT_THEME]
 
-    # --- User Management ---
     def _load_users_data(self):
         """Loads all user profiles and their typing history from users.json."""
         try:
@@ -341,7 +318,6 @@ class Game:
         if wpm < user_profile["low_wpm"] and wpm > 0:
             user_profile["low_wpm"] = wpm
 
-        # Add session to history
         user_profile["history"].append({
             "wpm": round(wpm),
             "accuracy": round(accuracy, 1),
@@ -350,7 +326,6 @@ class Game:
             "paragraph": paragraph[:50] + "..." if len(paragraph) > 50 else paragraph,  # Store snippet
             "date": time.strftime("%Y-%m-%d %H:%M:%S")
         })
-        # Optional: Limit history length to prevent huge file
         user_profile["history"] = user_profile["history"][-50:]  # Keep last 50 entries
 
         self._save_users_data()
@@ -358,7 +333,6 @@ class Game:
         self.high_wpm = user_profile["high_wpm"]
         self.low_wpm = user_profile["low_wpm"]
 
-    # --- Utility Drawing Functions ---
     def _wrap_text(self, text, font, max_width):
         words = text.split(' ')
         wrapped_lines = []
@@ -394,7 +368,6 @@ class Game:
             screen.blit(text_surface, text_rect)
             current_y += font.get_linesize() * line_spacing_factor
 
-    # --- Game Logic & State Transitions ---
     def _reset_game(self):
         """Resets game variables and initiates countdown."""
         self.input_text = ""
@@ -427,15 +400,11 @@ class Game:
             if self.input_text[i] == self.target_paragraph[i]:
                 correct_chars += 1
 
-        # Gross WPM (common in typing tests)
         self.wpm = (len(self.input_text) / 5) / (self.total_time / 60)
 
-        # Net WPM (penalizes errors more heavily, often calculated as Gross WPM - (errors / minutes))
-        # For simplicity, sticking to common WPM = (correct chars / 5) / minutes
 
         self.accuracy = (correct_chars / len(self.input_text)) * 100 if len(self.input_text) > 0 else 0.0
 
-        # Update user's scores and history
         self._update_user_scores(self.wpm, self.accuracy, self.total_time, self.errors, self.target_paragraph)
 
         self._play_sound(self.game_complete_sound)
@@ -529,11 +498,9 @@ class Game:
                                 self._play_sound(self.error_sound)
                                 self.errors += 1  # Increment total errors
 
-                                # Update heatmap data
                                 self.key_heatmap_data[typed_char.lower()] = self.key_heatmap_data.get(
                                     typed_char.lower(), 0) + 1
 
-                                # Update detailed errors
                                 if len(self.input_text) < len(self.target_paragraph):
                                     if typed_char != target_char:
                                         self.detailed_errors['substitutions'] += 1
@@ -565,31 +532,18 @@ class Game:
                     if self.input_text[i] == self.target_paragraph[i]:
                         correct_chars_live += 1
 
-                # Live WPM based on gross characters typed, not just correct ones, for real-time feel
                 if self.total_time > 0:
                     self.wpm = (len(self.input_text) / 5) / (self.total_time / 60)
                     self.accuracy = (correct_chars_live / len(self.input_text)) * 100 if len(
                         self.input_text) > 0 else 0.0
 
-                    # Update WPM history for graph
                     if len(self.wpm_history) == 0 or (
                             self.total_time * 1000 - self.wpm_history[-1][0]) >= 1000:  # Every second
                         self.wpm_history.append((self.total_time * 1000, self.wpm))
 
-                # Calculate omissions (if any) - this needs to be precise
-                # If typed length is less than target length at current position, and we skip chars
-                # This is tricky to do purely live with simple input_text and target_paragraph comparison.
-                # A full diffing algorithm or comparing `input_text` against `target_paragraph` as user types
-                # and explicitly looking for skipped characters would be more robust.
-                # For this example, insertions/substitutions are tracked live, omissions will be calculated
-                # more accurately at results based on overall comparison.
-
-            # Blinking cursor logic
             if current_time_ms - self.cursor_timer > self.cursor_blink_rate:
                 self.cursor_visible = not self.cursor_visible
                 self.cursor_timer = current_time_ms
-
-            # Input Box Scrolling Logic
             typed_surface = self.font_sm.render(self.input_text, True, self.current_theme_colors["FOREGROUND"])
             typed_width = typed_surface.get_width()
 
@@ -598,22 +552,15 @@ class Game:
             else:
                 self.input_scroll_offset_x = 0
 
-            # For accurate omission tracking *during* typing,
-            # we need to compare `input_text` to `target_paragraph` carefully.
-            # `self.errors` calculation here is total mismatches + untyped target chars.
-            # Detailed errors are collected on keydown.
-
-            # Re-calculate overall errors for display (live total)
+            
             self.errors = 0
             for i in range(min(len(self.input_text), len(self.target_paragraph))):
                 if self.input_text[i] != self.target_paragraph[i]:
                     self.errors += 1
             self.errors += max(0, len(self.input_text) - len(
                 self.target_paragraph))  # Count extra typed characters as errors
-            # Omissions: characters in target not yet typed
             self.errors += max(0, len(self.target_paragraph) - len(self.input_text))
 
-            # Final check for omissions at result calculation
             if self.current_state == RESULTS:  # Only calculate omissions precisely at the end
                 omissions_at_end = 0
                 if len(self.target_paragraph) > len(self.input_text):
