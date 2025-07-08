@@ -1,0 +1,39 @@
+{
+    "users": {
+        "ismail": {
+            "high_wpm": 36.647512186378954,
+            "low_wpm": 21.883119171174112,
+            "history": [
+                {
+                    "wpm": 37,
+                    "accuracy": 95.3,
+                    "time": 21.0,
+                    "errors": 3,
+                    "paragraph": "When I've built up my savings, I'll be able to tra...",
+                    "date": "2025-07-08 15:24:19"
+                },
+                {
+                    "wpm": 22,
+                    "accuracy": 93.8,
+                    "time": 35.1,
+                    "errors": 4,
+                    "paragraph": "When I've built up my savings, I'll be able to tra...",
+                    "date": "2025-07-08 15:26:21"
+                },
+                {
+                    "wpm": 31,
+                    "accuracy": 93.8,
+                    "time": 25.1,
+                    "errors": 4,
+                    "paragraph": "When I've built up my savings, I'll be able to tra...",
+                    "date": "2025-07-08 15:28:05"
+                }
+            ]
+        },
+        "azeem": {
+            "high_wpm": 0,
+            "low_wpm": Infinity,
+            "history": []
+        }
+    }
+}
